@@ -25,26 +25,26 @@ function PhotoModal({images,startIdx,onClose,onRankMove,onRemove}){
   return(
     <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.94)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:999,padding:8}}>
       <div onClick={e=>e.stopPropagation()} style={{background:"#fff",borderRadius:16,width:"100%",maxWidth:480,maxHeight:"95vh",overflowY:"auto",position:"relative"}}>
-        {/* Photo area */}
-        <div style={{position:"relative",background:"#111",borderRadius:"16px 16px 0 0",overflow:"hidden"}}
+        {/* Close button */}
+        <div style={{display:"flex",justifyContent:"flex-end",padding:"10px 12px 0"}}><button onClick={onClose} style={{background:"#f0f0f0",border:"none",color:"#666",fontSize:16,width:30,height:30,borderRadius:15,cursor:"pointer"}}>✕</button></div>
+
+        {/* Photo + Info — float layout */}
+        <div style={{padding:"8px 16px 8px",overflow:"hidden"}}
           onTouchStart={e=>{ts.current=e.touches[0].clientX}}
           onTouchEnd={e=>{if(ts.current===null)return;const d=e.changedTouches[0].clientX-ts.current;if(Math.abs(d)>50){d>0?prev():next()}ts.current=null}}>
-          <img src={img.src} alt="" style={{width:"100%",maxHeight:"40vh",objectFit:"contain",display:"block"}}/>
-          <button onClick={prev} style={{position:"absolute",left:8,top:"50%",transform:"translateY(-50%)",background:"rgba(255,255,255,0.2)",border:"none",color:"#fff",fontSize:22,width:34,height:34,borderRadius:17,cursor:"pointer"}}>‹</button>
-          <button onClick={next} style={{position:"absolute",right:8,top:"50%",transform:"translateY(-50%)",background:"rgba(255,255,255,0.2)",border:"none",color:"#fff",fontSize:22,width:34,height:34,borderRadius:17,cursor:"pointer"}}>›</button>
-          <div style={{position:"absolute",top:10,right:10}}><button onClick={onClose} style={{background:"rgba(0,0,0,0.5)",border:"none",color:"#fff",fontSize:16,width:30,height:30,borderRadius:15,cursor:"pointer"}}>✕</button></div>
-          <div style={{position:"absolute",bottom:8,left:0,right:0,textAlign:"center",color:"#fff",fontSize:12,textShadow:"0 1px 3px rgba(0,0,0,0.8)"}}>{idx+1} / {images.length}</div>
-        </div>
-
-        {/* Info */}
-        <div style={{padding:"14px 16px 8px"}}>
-          <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6,flexWrap:"wrap"}}>
+          <div style={{float:"left",position:"relative",width:"55%",marginRight:12,marginBottom:6,borderRadius:10,overflow:"hidden",background:"#111"}}>
+            <img src={img.src} alt="" style={{width:"100%",objectFit:"contain",display:"block"}}/>
+            <button onClick={prev} style={{position:"absolute",left:6,top:"50%",transform:"translateY(-50%)",background:"rgba(255,255,255,0.2)",border:"none",color:"#fff",fontSize:20,width:30,height:30,borderRadius:15,cursor:"pointer"}}>‹</button>
+            <button onClick={next} style={{position:"absolute",right:6,top:"50%",transform:"translateY(-50%)",background:"rgba(255,255,255,0.2)",border:"none",color:"#fff",fontSize:20,width:30,height:30,borderRadius:15,cursor:"pointer"}}>›</button>
+            <div style={{position:"absolute",bottom:6,left:0,right:0,textAlign:"center",color:"#fff",fontSize:11,textShadow:"0 1px 3px rgba(0,0,0,0.8)"}}>{idx+1} / {images.length}</div>
+          </div>
+          <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:4,flexWrap:"wrap"}}>
             <span style={{fontSize:16,fontWeight:700,color:"#222"}}>{pending?"Photo "+(idx+1):(ai?.room_en||"Photo")}</span>
             {ai?.room_jp&&!pending&&<span style={{fontSize:13,color:"#999"}}>{ai.room_jp}</span>}
             {ai?.stars>0&&<Stars n={ai.stars}/>}
           </div>
-          {displayDesc&&!pending&&<div style={{fontSize:13,color:"#555",lineHeight:1.6,marginBottom:8}}>{displayDesc}</div>}
-          {ai?.brightness>0&&<div style={{display:"flex",gap:10,flexWrap:"wrap",fontSize:11,color:"#aaa",marginBottom:8}}>
+          {displayDesc&&!pending&&<div style={{fontSize:13,color:"#555",lineHeight:1.6,marginBottom:6}}>{displayDesc}</div>}
+          {ai?.brightness>0&&<div style={{display:"flex",gap:10,flexWrap:"wrap",fontSize:11,color:"#aaa",marginBottom:6}}>
             <span>Brightness {ai.brightness}/5</span><span>Composition {ai.composition}/5</span><span>Space {ai.spaciousness}/5</span><span>Clutter {ai.clutter}/5</span>
           </div>}
         </div>
@@ -73,10 +73,6 @@ function PhotoModal({images,startIdx,onClose,onRankMove,onRemove}){
           </div>}
         </div>
 
-        {/* Filmstrip */}
-        <div style={{display:"flex",gap:4,overflowX:"auto",padding:"0 16px 16px"}}>
-          {images.map((m,i)=>(<div key={i} onClick={()=>setIdx(i)} style={{width:40,height:28,borderRadius:3,overflow:"hidden",border:i===idx?"2px solid #0097cc":"2px solid transparent",cursor:"pointer",flexShrink:0,opacity:i===idx?1:0.4}}><img src={m.src} style={{width:"100%",height:"100%",objectFit:"cover"}}/></div>))}
-        </div>
       </div>
     </div>
   );
