@@ -183,11 +183,11 @@ export default function App(){
                     <button onClick={isMobile?()=>setRankPickerIdx(idx):undefined} style={{width:28,height:28,borderRadius:7,display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:700,background:hero?"#0097cc":isMobile?"#f0f0f0":"#f0f0f0",color:hero?"#fff":"#999",border:isMobile&&!hero?"1px solid #ddd":"none",cursor:isMobile?"pointer":"grab"}}>{idx+1}</button>
                     {isMobile&&!hero&&<span style={{fontSize:7,color:"#bbb",marginTop:1}}>rank</span>}
                   </div>
-                  <div onClick={()=>openBrowser(active,idx,"ai")} style={{width:hero?140:96,height:hero?94:64,borderRadius:7,overflow:"hidden",border:hero?"2px solid #0097cc":"1px solid #e5e5e5",flexShrink:0,background:"#f8f8f8",cursor:"pointer",position:"relative"}}>
-                    <img src={img.src} style={{width:"100%",height:"100%",objectFit:"contain"}} loading="lazy"/>
-                    {hero&&<span style={{position:"absolute",top:3,left:3,fontSize:7,fontWeight:700,color:"#fff",background:"#0097cc",borderRadius:3,padding:"1px 5px"}}>HERO</span>}
-                  </div>
-                  <div style={{flex:1,minWidth:0}}>
+                  <div style={{flex:1,minWidth:0,overflow:"hidden"}}>
+                    <div onClick={()=>openBrowser(active,idx,"ai")} style={{float:"left",width:hero?(isMobile?234:273):187,height:hero?(isMobile?156:182):125,borderRadius:7,overflow:"hidden",border:hero?"2px solid #0097cc":"1px solid #e5e5e5",background:"#f8f8f8",cursor:"pointer",position:"relative",marginRight:10,marginBottom:4}}>
+                      <img src={img.src} style={{width:"100%",height:"100%",objectFit:"contain"}} loading="lazy"/>
+                      {hero&&<span style={{position:"absolute",top:3,left:3,fontSize:7,fontWeight:700,color:"#fff",background:"#0097cc",borderRadius:3,padding:"1px 5px"}}>HERO</span>}
+                    </div>
                     <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap",marginBottom:2}}>
                       <span style={{fontSize:13,fontWeight:600,color:pending?"#bbb":"#222"}}>{ai?.room_en&&!pending?ai.room_en:"Photo"}</span>
                       {ai?.room_jp&&!pending&&<span style={{fontSize:11,color:"#999"}}>{ai.room_jp}</span>}
@@ -241,7 +241,7 @@ export default function App(){
         </div>
       </div>
       {browseIdx!==null&&<PhotoBrowser images={browserImgs} startIdx={browseIdx} onClose={()=>setBrowseIdx(null)}/>}
-      {rankPickerIdx!==null&&<RankPicker images={active} currentIdx={rankPickerIdx} onSelect={(to)=>handleRankMove(rankPickerIdx,to)} onClose={()=>setRankPickerIdx(null)}/>}
+      {rankPickerIdx!==null&&<RankPicker images={active} currentIdx={rankPickerIdx} onSelect={(to)=>{handleRankMove(rankPickerIdx,to);setRankPickerIdx(to)}} onClose={()=>setRankPickerIdx(null)}/>}
     </div>
   );
 }
