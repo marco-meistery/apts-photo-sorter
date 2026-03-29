@@ -54,7 +54,7 @@ function PhotoModal({images,startIdx,onClose,onRankMove,onRemove}){
           <div style={{fontSize:10,fontWeight:700,letterSpacing:"0.06em",textTransform:"uppercase",color:"#aaa",marginBottom:8}}>Set rank position</div>
           <div style={{display:"grid",gridTemplateColumns:`repeat(${cols}, 1fr)`,gap:5}}>
             {images.map((_,ti)=>{const isCur=ti===idx;const t=images[ti];return(
-              <button key={ti} onClick={()=>{if(!isCur){onRankMove(idx,ti)}}} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,padding:"5px 2px",borderRadius:7,cursor:isCur?"default":"pointer",border:isCur?"2px solid #0097cc":"1px solid #e5e5e5",background:isCur?"#eef8fc":"#fff",opacity:isCur?.5:1}}>
+              <button key={ti} onClick={()=>{if(!isCur){onRankMove(idx,ti);setIdx(ti)}}} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,padding:"5px 2px",borderRadius:7,cursor:isCur?"default":"pointer",border:isCur?"2px solid #0097cc":"1px solid #e5e5e5",background:isCur?"#eef8fc":"#fff",opacity:isCur?.5:1}}>
                 <div style={{width:36,height:24,borderRadius:3,overflow:"hidden",background:"#f0f0f0"}}><img src={t.src} style={{width:"100%",height:"100%",objectFit:"cover"}} loading="lazy"/></div>
                 <div style={{fontSize:12,fontWeight:700,color:isCur?"#0097cc":"#555"}}>{ti+1}</div>
               </button>
