@@ -1,0 +1,5 @@
+/aptsjp/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/aptsjp/index.html
+  Cache-Control: public, max-age=0, must-revalidate
