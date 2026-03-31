@@ -34,3 +34,22 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy dist --project-name=apts-agents
+
+      - name: Purge Cloudflare cache
+        run: |
+          # Look up the zone ID for datameister.jp
+          ZONE_ID=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones?name=datameister.jp" \
+            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
+            -H "Content-Type: application/json" | jq -r '.result[0].id')
+
+          if [ "$ZONE_ID" = "null" ] || [ -z "$ZONE_ID" ]; then
+            echo "⚠️ Could not find zone ID for datameister.jp — skipping cache purge"
+            exit 0
+          fi
+
+          echo "Purging cache for zone $ZONE_ID (datameister.jp)..."
+          curl -s -X POST "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/purge_cache" \
+            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data '{"prefixes":["clients.datameister.jp/aptsjp"]}' | jq .
+          echo "✅ Cache purge requested"
